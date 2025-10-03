@@ -58,7 +58,7 @@ public class B0nusCode extends JavaPlugin {
         getCommand("adminpromo").setExecutor(new AdminPromoCommand(configManager, promoManager));
         getCommand("adminpromo").setTabCompleter(new CommandCompleter(configManager));
     }
-
+#1
     public ConfigManager getConfigManager() {
         return configManager;
     }
