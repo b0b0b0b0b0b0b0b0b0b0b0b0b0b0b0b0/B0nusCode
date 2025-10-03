@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -98,7 +99,7 @@ public class ConfigManager {
     }
 
     public Map<String, PromoCode> getAllPromos() {
-        return new HashMap<>(promoCodes);
+        return Collections.unmodifiableMap(promoCodes);
     }
 
     public List<String> getPromoRewards(String promo) {

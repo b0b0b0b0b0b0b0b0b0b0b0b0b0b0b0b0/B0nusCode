@@ -10,6 +10,7 @@ import com.bobobo.plugins.b0nuscode.managers.PromoManager;
 import com.bobobo.plugins.b0nuscode.managers.PromoTimeBonusManager;
 import com.bobobo.plugins.b0nuscode.managers.RewardExecutor;
 import com.bobobo.plugins.b0nuscode.ut.up.UP;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class B0nusCode extends JavaPlugin {
@@ -28,7 +29,7 @@ public class B0nusCode extends JavaPlugin {
         promoTimeBonusManager.start();
         if (configManager.getPromoCodesConfig().getBoolean("plugin.check-updates", true)) {
             String version = getDescription().getVersion();
-            getServer().getScheduler().runTaskLater(this, () -> UP.checkVersion(version), 60L);
+            getServer().getScheduler().runTaskLaterAsynchronously(this, () -> UP.checkVersion(version), 60L);
         }
     }
 
@@ -52,11 +53,15 @@ public class B0nusCode extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("promo").setExecutor(new PromoCommand(promoManager, configManager));
-        getCommand("promo").setTabCompleter(new CommandCompleter(configManager));
+        CommandCompleter completer = new CommandCompleter(configManager);
 
-        getCommand("adminpromo").setExecutor(new AdminPromoCommand(configManager, promoManager));
-        getCommand("adminpromo").setTabCompleter(new CommandCompleter(configManager));
+        PluginCommand promoCmd = getCommand("promo");
+        promoCmd.setExecutor(new PromoCommand(promoManager, configManager));
+        promoCmd.setTabCompleter(completer);
+
+        PluginCommand adminPromoCmd = getCommand("adminpromo");
+        adminPromoCmd.setExecutor(new AdminPromoCommand(configManager, promoManager));
+        adminPromoCmd.setTabCompleter(completer);
     }
 
     public ConfigManager getConfigManager() {
