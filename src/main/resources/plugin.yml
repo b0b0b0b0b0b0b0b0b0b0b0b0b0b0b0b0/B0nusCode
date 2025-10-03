@@ -1,0 +1,11 @@
+name: B0nusCode
+version: '${project.version}'
+main: com.bobobo.plugins.b0nuscode.B0nusCode
+api-version: '1.16'
+commands:
+  promo:
+    description: Activate a promo code
+    usage: /<command> <code>
+  adminpromo:
+    description: Admin commands for managing promocodes
+    usage: /<command> <list|add|remove|reset|reload>
