@@ -99,7 +99,7 @@ public class ConfigManager {
     }
 
     public Map<String, PromoCode> getAllPromos() {
-        return Collections.unmodifiableMap(promoCodes);
+        return Map.copyOf(promoCodes);
     }
 
     public List<String> getPromoRewards(String promo) {
