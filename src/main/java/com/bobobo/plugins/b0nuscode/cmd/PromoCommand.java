@@ -25,26 +25,26 @@ public class PromoCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("b0nuscode.promo")) {
-            MessageUtils.sendConfigMessage(sender, configManager, "no-permission", "§cYou don't have permission to use this command!");
+            MessageUtils.sendConfigMessage(sender, configManager, "no-permission", "§cУ вас нет прав для использования этой команды!");
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            MessageUtils.sendConfigMessage(sender, configManager, "no-console", "§cOnly players can use this command!");
+            MessageUtils.sendConfigMessage(sender, configManager, "no-console", "§cТолько игроки могут использовать эту команду!");
             return true;
         }
 
         Player player = (Player) sender;
 
         if (args.length != 1) {
-            MessageUtils.sendConfigMessage(player, configManager, "usage", "§cUsage: /promo <code>");
+            MessageUtils.sendConfigMessage(player, configManager, "usage", "§cИспользование: /promo <код>");
             return true;
         }
 
         String promoCode = args[0];
 
         if (!ValidationUtils.isValidPromoCode(promoCode)) {
-            MessageUtils.sendConfigMessage(player, configManager, "invalid-promo", "§cInvalid promo code!");
+            MessageUtils.sendConfigMessage(player, configManager, "invalid-promo", "§cНеверный промокод!");
             return true;
         }
 
@@ -55,9 +55,9 @@ public class PromoCommand implements CommandExecutor {
         switch (result) {
             case SUCCESS:
                 PromoCode promoCodeObj = configManager.getPromoCode(promoCode);
-                String youtuber = promoCodeObj != null ? promoCodeObj.getYoutuber() : "Unknown";
+                String youtuber = promoCodeObj != null ? promoCodeObj.getYoutuber() : "Неизвестный";
 
-                String successMessage = configManager.getMessage("promo-activated", "&aPromo code activated successfully!")
+                String successMessage = configManager.getMessage("promo-activated", "&aПромокод успешно активирован!")
                         .replace("%player%", player.getName())
                         .replace("%youtuber%", youtuber);
                 NotificationUtils.sendFullNotification(player, configManager, "promo-success", successMessage);
@@ -73,35 +73,35 @@ public class PromoCommand implements CommandExecutor {
                 }
                 break;
             case INVALID_PROMO:
-                String invalidMessage = configManager.getMessage("invalid-promo", "&cInvalid promo code!");
+                String invalidMessage = configManager.getMessage("invalid-promo", "&cНеверный промокод!");
                 NotificationUtils.playConfigSound(player, configManager, "promo-error");
                 if (NotificationUtils.isChatMessagesEnabled(configManager)) {
                     MessageUtils.sendMessage(player, invalidMessage);
                 }
                 break;
             case ALREADY_USED:
-                String usedMessage = configManager.getMessage("already-used", "&cYou have already used this promo code!");
+                String usedMessage = configManager.getMessage("already-used", "&cВы уже использовали этот промокод!");
                 NotificationUtils.playConfigSound(player, configManager, "promo-error");
                 if (NotificationUtils.isChatMessagesEnabled(configManager)) {
                     MessageUtils.sendMessage(player, usedMessage);
                 }
                 break;
             case ALREADY_USED_ANY_PROMO:
-                String usedAnyMessage = configManager.getMessage("already-used-any", "&cYou have already used a promo code! Each player can only use one promo code.");
+                String usedAnyMessage = configManager.getMessage("already-used-any", "&cВы уже использовали промокод! Каждый игрок может использовать только один промокод.");
                 NotificationUtils.playConfigSound(player, configManager, "promo-error");
                 if (NotificationUtils.isChatMessagesEnabled(configManager)) {
                     MessageUtils.sendMessage(player, usedAnyMessage);
                 }
                 break;
             case NO_REWARDS:
-                String noRewardsMessage = configManager.getMessage("no-rewards", "&cThis promo code has no rewards!");
+                String noRewardsMessage = configManager.getMessage("no-rewards", "&cУ этого промокода нет наград!");
                 NotificationUtils.playConfigSound(player, configManager, "promo-error");
                 if (NotificationUtils.isChatMessagesEnabled(configManager)) {
                     MessageUtils.sendMessage(player, noRewardsMessage);
                 }
                 break;
             case MAX_USES_REACHED:
-                String maxUsesMessage = configManager.getMessage("max-uses-reached", "&cThis promo code has reached its maximum uses!");
+                String maxUsesMessage = configManager.getMessage("max-uses-reached", "&cЭтот промокод исчерпал максимальное количество использований!");
                 NotificationUtils.playConfigSound(player, configManager, "promo-error");
                 if (NotificationUtils.isChatMessagesEnabled(configManager)) {
                     MessageUtils.sendMessage(player, maxUsesMessage);
