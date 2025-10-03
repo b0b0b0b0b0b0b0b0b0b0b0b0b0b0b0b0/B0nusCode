@@ -1,4 +1,4 @@
-package com.bobobo.plugins.b0nuscode.managers;
+package com.bobobo.plugins.b0nuscode.cfg;
 
 import com.bobobo.plugins.b0nuscode.models.PromoCode;
 import org.bukkit.configuration.ConfigurationSection;
@@ -7,7 +7,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;

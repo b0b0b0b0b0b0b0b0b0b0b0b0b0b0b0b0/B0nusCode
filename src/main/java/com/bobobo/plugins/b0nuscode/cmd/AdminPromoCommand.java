@@ -1,6 +1,6 @@
 package com.bobobo.plugins.b0nuscode.cmd;
 
-import com.bobobo.plugins.b0nuscode.managers.ConfigManager;
+import com.bobobo.plugins.b0nuscode.cfg.ConfigManager;
 import com.bobobo.plugins.b0nuscode.managers.PromoManager;
 import com.bobobo.plugins.b0nuscode.models.PromoCode;
 import com.bobobo.plugins.b0nuscode.ut.MessageUtils;

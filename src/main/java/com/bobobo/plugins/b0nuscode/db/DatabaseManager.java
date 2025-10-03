@@ -1,4 +1,4 @@
-package com.bobobo.plugins.b0nuscode.managers;
+package com.bobobo.plugins.b0nuscode.db;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

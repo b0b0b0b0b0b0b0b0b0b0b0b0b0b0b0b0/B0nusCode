@@ -1,5 +1,6 @@
 package com.bobobo.plugins.b0nuscode.managers;
 
+import com.bobobo.plugins.b0nuscode.db.DatabaseManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 

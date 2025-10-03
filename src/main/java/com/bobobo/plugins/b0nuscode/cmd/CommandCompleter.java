@@ -1,6 +1,6 @@
 package com.bobobo.plugins.b0nuscode.cmd;
 
-import com.bobobo.plugins.b0nuscode.managers.ConfigManager;
+import com.bobobo.plugins.b0nuscode.cfg.ConfigManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

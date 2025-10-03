@@ -1,4 +1,4 @@
-package com.bobobo.plugins.b0nuscode.managers;
+package com.bobobo.plugins.b0nuscode.rw;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;

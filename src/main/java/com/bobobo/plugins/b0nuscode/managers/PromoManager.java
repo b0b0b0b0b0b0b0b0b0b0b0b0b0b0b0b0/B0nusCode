@@ -1,6 +1,9 @@
 package com.bobobo.plugins.b0nuscode.managers;
 
+import com.bobobo.plugins.b0nuscode.cfg.ConfigManager;
+import com.bobobo.plugins.b0nuscode.db.DatabaseManager;
 import com.bobobo.plugins.b0nuscode.models.PromoCode;
+import com.bobobo.plugins.b0nuscode.rw.RewardExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
