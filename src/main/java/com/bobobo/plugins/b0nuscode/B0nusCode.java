@@ -23,33 +23,23 @@ public class B0nusCode extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("B0nusCode plugin is starting...");
-
         initializeManagers();
         registerCommands();
         promoTimeBonusManager.start();
-
         if (configManager.getPromoCodesConfig().getBoolean("plugin.check-updates", true)) {
             String version = getDescription().getVersion();
             getServer().getScheduler().runTaskLater(this, () -> UP.checkVersion(version), 60L);
         }
-
-        getLogger().info("B0nusCode plugin has been enabled successfully!");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("B0nusCode plugin is shutting down...");
-
         if (promoTimeBonusManager != null) {
             promoTimeBonusManager.stop();
         }
-
         if (dataManager != null) {
             dataManager.close();
         }
-
-        getLogger().info("B0nusCode plugin has been disabled!");
     }
 
     private void initializeManagers() {
