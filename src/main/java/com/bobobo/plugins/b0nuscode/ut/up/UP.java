@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class UP {
 
-    private static final String VERSION_URL = "https://b0b0b0.dev/pl/b0nuscodeRaw.txt";
+    private static final String VERSION_URL = "https://b0b0b0.dev/pl/b0nusRaw.txt";
     private static final String PREFIX = "\u001B[37m[\u001B[90mB0nusCode\u001B[37m]\u001B[0m ";
     private static final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
@@ -30,7 +30,7 @@ public class UP {
                 logWarning("Current version: \u001B[90m" + currentVersion +
                         "\u001B[0m, latest version: \u001B[32m" + latestVersion + "\u001B[0m.");
                 logWarning("Please update the plugin. Choose one of the following links to download:");
-                console.sendMessage(PREFIX + "\u001B[36m2. Black-Minecraft: \u001B[0mhttps://bm.wtf/resources/b0nuscode/");
+                console.sendMessage(PREFIX + "\u001B[36m2. Black-Minecraft: \u001B[0mhttps://bm.wtf/resources/9373/");
                 console.sendMessage(PREFIX + " ");
             } else {
                 logInfo("You are using the latest version of the plugin! Version: \u001B[32m" + currentVersion + "\u001B[0m.");
