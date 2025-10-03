@@ -1,5 +1,2 @@
 # Project exclude paths
 /target/
-/.idea/
-dependency-reduced-pom.xml
-B0nusCode.iml
