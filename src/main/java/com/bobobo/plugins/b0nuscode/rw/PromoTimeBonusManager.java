@@ -78,9 +78,11 @@ public class PromoTimeBonusManager {
                             plugin.getServer().getScheduler().runTask(plugin, () -> {
                                 rewardExecutor.executeRewards(player, rewards);
 
+                                String formattedTime = com.bobobo.plugins.b0nuscode.ut.TimeFormatter.formatMinutes(requiredMinutes);
                                 String message = configManager.getMessage("time-bonus-received", "")
-                                        .replace("%minutes%", String.valueOf(requiredMinutes))
-                                        .replace("%rewards%", String.join(", ", rewards));
+                                        .replace("%player%", player.getName())
+                                        .replace("%minutes%", formattedTime)
+                                        .replace("%youtuber%", promoCode.getYoutuber());
 
                                 if (!message.isEmpty()) {
                                     player.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));

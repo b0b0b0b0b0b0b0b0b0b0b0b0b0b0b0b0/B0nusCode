@@ -6,7 +6,7 @@
 
     <groupId>com.bobobo.plugins</groupId>
     <artifactId>B0nusCode</artifactId>
-    <version>1.2-beta</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
 
     <name>B0nusCode</name>

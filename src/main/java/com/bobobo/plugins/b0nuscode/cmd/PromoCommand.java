@@ -68,7 +68,9 @@ public class PromoCommand implements CommandExecutor {
                             .replace("%youtuber%", youtuber);
 
                     for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        onlinePlayer.sendMessage(ColorParser.parse(broadcastMessage));
+                        if (!onlinePlayer.equals(player)) {
+                            onlinePlayer.sendMessage(ColorParser.parse(broadcastMessage));
+                        }
                     }
                 }
                 break;

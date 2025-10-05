@@ -24,9 +24,11 @@ messages:
       &#C4B0FB  ютубером &#B388EB%youtuber%&#C4B0FB!
       &#6A0DAD&l━━━━━━━━━━━━━━━━━━━━━━━━━━━
   time-bonus-received: |
-    &#ffd700&l✦ Бонус за время игры! ✦
-    &#00ff00Вы играете уже %minutes% минут после активации промокода!
-    &#ffd700Получено: %rewards%
+    &#6A0DAD&l    *✧･ﾟ &#C4B0FBБонус за время игры! &#6A0DAD&lﾟ･✧*
+    &#6A0DAD  &#AB47BC%player% &#6A0DADиграет уже &#B388EB%minutes% &#6A0DADпосле активации промокода!
+    &#6A0DAD               
+    &#C4B0FB         Бонус от ютубера &#B388EB%youtuber%&#C4B0FB!
+    &#6A0DAD&l   ･✧ﾟ======================= ﾟ✧･
   stats-header: "&#6A0DAD&l=== Статистика промокодов ==="
   stats-line: "&#C4B0FB%code% &#7E57C2(Ютубер: &#AB47BC%youtuber%&#7E57C2) - &#9575CD%uses% использований"
   stats-max-uses: " &#7E57C2(макс: &#AB47BC%max%&#7E57C2)"
