@@ -7,6 +7,7 @@ import com.bobobo.plugins.b0nuscode.cfg.ConfigManager;
 import com.bobobo.plugins.b0nuscode.managers.DataManager;
 import com.bobobo.plugins.b0nuscode.db.DatabaseManager;
 import com.bobobo.plugins.b0nuscode.managers.PromoManager;
+import com.bobobo.plugins.b0nuscode.managers.YouTuberCashbackManager;
 import com.bobobo.plugins.b0nuscode.rw.PromoTimeBonusManager;
 import com.bobobo.plugins.b0nuscode.rw.RewardExecutor;
 import com.bobobo.plugins.b0nuscode.ut.up.UP;
@@ -21,12 +22,14 @@ public class B0nusCode extends JavaPlugin {
     private RewardExecutor rewardExecutor;
     private PromoManager promoManager;
     private PromoTimeBonusManager promoTimeBonusManager;
+    private YouTuberCashbackManager youtuberCashbackManager;
 
     @Override
     public void onEnable() {
         initializeManagers();
         registerCommands();
         promoTimeBonusManager.start();
+        youtuberCashbackManager.start();
         if (configManager.getPromoCodesConfig().getBoolean("plugin.check-updates", true)) {
             String version = getDescription().getVersion();
             getServer().getScheduler().runTaskLaterAsynchronously(this, () -> UP.checkVersion(version), 60L);
@@ -37,6 +40,9 @@ public class B0nusCode extends JavaPlugin {
     public void onDisable() {
         if (promoTimeBonusManager != null) {
             promoTimeBonusManager.stop();
+        }
+        if (youtuberCashbackManager != null) {
+            youtuberCashbackManager.stop();
         }
         if (dataManager != null) {
             dataManager.close();
@@ -50,6 +56,7 @@ public class B0nusCode extends JavaPlugin {
         rewardExecutor = new RewardExecutor(this);
         promoManager = new PromoManager(configManager, dataManager, databaseManager, rewardExecutor);
         promoTimeBonusManager = new PromoTimeBonusManager(this, configManager, databaseManager, rewardExecutor);
+        youtuberCashbackManager = new YouTuberCashbackManager(this, configManager, databaseManager);
     }
 
     private void registerCommands() {

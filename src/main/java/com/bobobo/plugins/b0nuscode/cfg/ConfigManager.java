@@ -53,6 +53,7 @@ public class ConfigManager {
         for (String code : section.getKeys(false)) {
             String path = "promocodes." + code;
             String youtuber = promoCodesConfig.getString(path + ".youtuber", "Unknown");
+            String youtuberPlayer = promoCodesConfig.getString(path + ".youtuber-player", null);
             List<String> rewards = promoCodesConfig.getStringList(path + ".rewards");
 
             int maxUses = 0;
@@ -80,7 +81,7 @@ public class ConfigManager {
                 }
             }
 
-            PromoCode promoCode = new PromoCode(code.toLowerCase(), youtuber, rewards, maxUses, timeBonusEnabled, timeBonuses);
+            PromoCode promoCode = new PromoCode(code.toLowerCase(), youtuber, youtuberPlayer, rewards, maxUses, timeBonusEnabled, timeBonuses);
             promoCodes.put(code.toLowerCase(), promoCode);
         }
     }

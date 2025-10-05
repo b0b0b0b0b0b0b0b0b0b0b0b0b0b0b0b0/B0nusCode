@@ -4,6 +4,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -231,6 +233,23 @@ public class DatabaseManager {
                 return 0L;
             }
         }, executor);
+    }
+
+    public List<UUID> getPlayersByPromo(String promoCode) throws SQLException {
+        List<UUID> players = new ArrayList<>();
+        String sql = "SELECT uuid FROM promo_time_bonus WHERE promo_code = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, promoCode.toLowerCase());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                try {
+                    players.add(UUID.fromString(rs.getString("uuid")));
+                } catch (IllegalArgumentException e) {
+                    plugin.getLogger().warning("Invalid UUID in database: " + rs.getString("uuid"));
+                }
+            }
+        }
+        return players;
     }
 
     public void close() {

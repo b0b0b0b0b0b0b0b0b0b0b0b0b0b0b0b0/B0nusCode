@@ -6,6 +6,7 @@ import java.util.Map;
 public record PromoCode(
         String code,
         String youtuber,
+        String youtuberPlayer,
         List<String> rewards,
         int maxUses,
         boolean timeBonusEnabled,
@@ -21,6 +22,10 @@ public record PromoCode(
 
     public String getYoutuber() {
         return youtuber;
+    }
+
+    public String getYoutuberPlayer() {
+        return youtuberPlayer;
     }
 
     public List<String> getRewards() {

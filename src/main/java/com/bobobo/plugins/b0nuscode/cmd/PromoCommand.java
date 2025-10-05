@@ -109,6 +109,13 @@ public class PromoCommand implements CommandExecutor {
                     MessageUtils.sendMessage(player, maxUsesMessage);
                 }
                 break;
+            case YOUTUBER_CANNOT_USE_OWN:
+                String youtuberOwnMessage = configManager.getMessage("youtuber-cannot-use-own", "&cВы не можете использовать свой собственный промокод!");
+                NotificationUtils.playConfigSound(player, configManager, "promo-error");
+                if (NotificationUtils.isChatMessagesEnabled(configManager)) {
+                    MessageUtils.sendMessage(player, youtuberOwnMessage);
+                }
+                break;
         }
 
         return true;

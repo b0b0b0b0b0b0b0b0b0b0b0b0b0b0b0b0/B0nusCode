@@ -7,6 +7,7 @@ messages:
   already-used-any: "&cВы уже использовали промокод! Каждый игрок может использовать только один промокод."
   max-uses-reached: "&cЭтот промокод исчерпал максимальное количество использований!"
   no-rewards: "&cУ этого промокода нет наград!"
+  youtuber-cannot-use-own: "&cВы не можете использовать свой собственный промокод!"
   promo-activated: |
     &#6A0DAD&l    *✧･ﾟ &#C4B0FBПромокод активирован! &#6A0DAD&lﾟ･✧*
     &#6A0DAD  &#AB47BC%player% &#6A0DADиспользовал промокод от &#B388EB%youtuber%&#6A0DAD!
@@ -28,6 +29,13 @@ messages:
     &#6A0DAD  &#AB47BC%player% &#6A0DADиграет уже &#B388EB%minutes% &#6A0DADпосле активации промокода!
     &#6A0DAD               
     &#C4B0FB         Бонус от ютубера &#B388EB%youtuber%&#C4B0FB!
+    &#6A0DAD&l   ･✧ﾟ======================= ﾟ✧･
+  cashback-received: |
+    &#6A0DAD&l    *✧･ﾟ &#C4B0FBКешбек от игроков! &#6A0DAD&lﾟ･✧*
+    &#6A0DAD  &#AB47BC%youtuber%&#6A0DAD, твои игроки активны!
+    &#6A0DAD               
+    &#C4B0FB         Начислено: &#B388EB%cashback% монет
+    &#7E57C2         Твоих игроков онлайн: &#9575CD%players%
     &#6A0DAD&l   ･✧ﾟ======================= ﾟ✧･
   stats-header: "&#6A0DAD&l=== Статистика промокодов ==="
   stats-line: "&#C4B0FB%code% &#7E57C2(Ютубер: &#AB47BC%youtuber%&#7E57C2) - &#9575CD%uses% использований"

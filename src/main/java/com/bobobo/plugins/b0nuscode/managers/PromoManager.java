@@ -30,6 +30,11 @@ public class PromoManager {
             return PromoResult.INVALID_PROMO;
         }
 
+        if (promoCodeObj.getYoutuberPlayer() != null &&
+                player.getName().equalsIgnoreCase(promoCodeObj.getYoutuberPlayer())) {
+            return PromoResult.YOUTUBER_CANNOT_USE_OWN;
+        }
+
         if (dataManager.hasUsedPromo(player, promo)) {
             return PromoResult.ALREADY_USED;
         }
@@ -83,6 +88,7 @@ public class PromoManager {
         ALREADY_USED,
         ALREADY_USED_ANY_PROMO,
         NO_REWARDS,
-        MAX_USES_REACHED
+        MAX_USES_REACHED,
+        YOUTUBER_CANNOT_USE_OWN
     }
 }
