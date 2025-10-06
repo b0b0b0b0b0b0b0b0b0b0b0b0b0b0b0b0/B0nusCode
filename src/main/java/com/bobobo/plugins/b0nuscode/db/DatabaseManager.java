@@ -67,11 +67,20 @@ public class DatabaseManager {
                 "PRIMARY KEY (uuid, promo_code)" +
                 ")";
 
+        String createPromoTimeBonusStatsTable = "CREATE TABLE IF NOT EXISTS promo_time_bonus_stats (" +
+                "uuid TEXT, " +
+                "promo_code TEXT, " +
+                "minutes INTEGER, " +
+                "claimed_at INTEGER, " +
+                "PRIMARY KEY (uuid, promo_code, minutes)" +
+                ")";
+
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createPromoTable);
             stmt.execute(createTimeRewardsTable);
             stmt.execute(createPromoStatsTable);
             stmt.execute(createPromoTimeBonusTable);
+            stmt.execute(createPromoTimeBonusStatsTable);
         }
     }
 
@@ -250,6 +259,85 @@ public class DatabaseManager {
             }
         }
         return players;
+    }
+
+    public CompletableFuture<Void> recordTimeBonusClaimAsync(UUID uuid, String promoCode, int minutes) {
+        return CompletableFuture.runAsync(() -> {
+            String sql = "INSERT OR IGNORE INTO promo_time_bonus_stats (uuid, promo_code, minutes, claimed_at) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, uuid.toString());
+                stmt.setString(2, promoCode.toLowerCase());
+                stmt.setInt(3, minutes);
+                stmt.setLong(4, System.currentTimeMillis());
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error recording time bonus claim: " + e.getMessage());
+            }
+        }, executor);
+    }
+
+    public CompletableFuture<Integer> getTimeBonusClaimCountAsync(String promoCode, int minutes) {
+        return CompletableFuture.supplyAsync(() -> {
+            String sql = "SELECT COUNT(DISTINCT uuid) as count FROM promo_time_bonus_stats WHERE promo_code = ? AND minutes = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, promoCode.toLowerCase());
+                stmt.setInt(2, minutes);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getInt("count");
+                }
+                return 0;
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error getting time bonus claim count: " + e.getMessage());
+                return 0;
+            }
+        }, executor);
+    }
+
+    public CompletableFuture<java.util.Map<Integer, Integer>> getAllTimeBonusStatsAsync(String promoCode) {
+        return CompletableFuture.supplyAsync(() -> {
+            java.util.Map<Integer, Integer> stats = new java.util.HashMap<>();
+            String sql = "SELECT minutes, COUNT(DISTINCT uuid) as count FROM promo_time_bonus_stats WHERE promo_code = ? GROUP BY minutes";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, promoCode.toLowerCase());
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    stats.put(rs.getInt("minutes"), rs.getInt("count"));
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error getting all time bonus stats: " + e.getMessage());
+            }
+            return stats;
+        }, executor);
+    }
+
+    public CompletableFuture<Void> resetPlayerDataAsync(UUID uuid) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                String deletePromoUsage = "DELETE FROM promo_usage WHERE uuid = ?";
+                String deleteTimeRewards = "DELETE FROM time_rewards WHERE uuid = ?";
+                String deletePromoTimeBonus = "DELETE FROM promo_time_bonus WHERE uuid = ?";
+                String deleteTimeBonusStats = "DELETE FROM promo_time_bonus_stats WHERE uuid = ?";
+
+                try (PreparedStatement stmt1 = connection.prepareStatement(deletePromoUsage);
+                     PreparedStatement stmt2 = connection.prepareStatement(deleteTimeRewards);
+                     PreparedStatement stmt3 = connection.prepareStatement(deletePromoTimeBonus);
+                     PreparedStatement stmt4 = connection.prepareStatement(deleteTimeBonusStats)) {
+
+                    stmt1.setString(1, uuid.toString());
+                    stmt2.setString(1, uuid.toString());
+                    stmt3.setString(1, uuid.toString());
+                    stmt4.setString(1, uuid.toString());
+
+                    stmt1.executeUpdate();
+                    stmt2.executeUpdate();
+                    stmt3.executeUpdate();
+                    stmt4.executeUpdate();
+                }
+            } catch (SQLException e) {
+                plugin.getLogger().severe("Error resetting player data: " + e.getMessage());
+            }
+        }, executor);
     }
 
     public void close() {

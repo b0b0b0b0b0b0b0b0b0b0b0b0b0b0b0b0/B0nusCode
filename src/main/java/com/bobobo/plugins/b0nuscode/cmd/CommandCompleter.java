@@ -43,6 +43,7 @@ public class CommandCompleter implements TabCompleter {
 
                 switch (subCommand) {
                     case "remove":
+                    case "stats":
                         for (String promo : configManager.getAllPromos().keySet()) {
                             if (promo.toLowerCase().startsWith(input)) {
                                 completions.add(promo);

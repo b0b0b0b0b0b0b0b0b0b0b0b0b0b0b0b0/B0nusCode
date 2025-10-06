@@ -22,7 +22,8 @@ public class AdminPromoCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("b0nuscode.admin")) {
-            MessageUtils.sendError(sender, "You don't have permission to use this command!");
+            String message = configManager.getMessagesConfig().getString("messages.admin.no-permission", "У вас нет прав для использования этой команды!");
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             return true;
         }
 
@@ -41,28 +42,35 @@ public class AdminPromoCommand implements CommandExecutor {
                 if (args.length >= 3) {
                     addPromo(sender, args);
                 } else {
-                    MessageUtils.sendError(sender, "Usage: /adminpromo add <code> <reward1> [reward2] [reward3]...");
+                    String message = configManager.getMessagesConfig().getString("messages.admin.add-usage", "Использование: /adminpromo add <код> <награда1> [награда2] [награда3]...");
+                    sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
                 }
                 break;
             case "remove":
                 if (args.length >= 2) {
                     removePromo(sender, args[1]);
                 } else {
-                    MessageUtils.sendError(sender, "Usage: /adminpromo remove <code>");
+                    String message = configManager.getMessagesConfig().getString("messages.admin.remove-usage", "Использование: /adminpromo remove <код>");
+                    sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
                 }
                 break;
             case "reset":
                 if (args.length >= 2) {
                     resetPlayerPromo(sender, args[1]);
                 } else {
-                    MessageUtils.sendError(sender, "Usage: /adminpromo reset <player>");
+                    String message = configManager.getMessagesConfig().getString("messages.admin.reset-usage", "Использование: /adminpromo reset <игрок>");
+                    sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
                 }
                 break;
             case "reload":
                 reloadConfig(sender);
                 break;
             case "stats":
-                showStats(sender);
+                if (args.length >= 2) {
+                    showPromoStats(sender, args[1]);
+                } else {
+                    showStats(sender);
+                }
                 break;
             default:
                 sendHelp(sender);
@@ -73,24 +81,35 @@ public class AdminPromoCommand implements CommandExecutor {
     }
 
     private void sendHelp(CommandSender sender) {
-        MessageUtils.sendInfo(sender, "&6=== B0nusCode Admin Commands ===");
-        MessageUtils.sendInfo(sender, "&e/adminpromo list &7- Show all promocodes");
-        MessageUtils.sendInfo(sender, "&e/adminpromo add <code> <reward1> [reward2]... &7- Add new promocode");
-        MessageUtils.sendInfo(sender, "&e/adminpromo remove <code> &7- Remove promocode");
-        MessageUtils.sendInfo(sender, "&e/adminpromo reset <player> &7- Reset player's promocode usage");
-        MessageUtils.sendInfo(sender, "&e/adminpromo reload &7- Reload configuration");
-        MessageUtils.sendInfo(sender, "&e/adminpromo stats &7- Show promocode statistics");
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(
+                configManager.getMessagesConfig().getString("messages.admin.help-header", "=== Команды B0nusCode ===")));
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(
+                configManager.getMessagesConfig().getString("messages.admin.help-list", "/adminpromo list - Показать все промокоды")));
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(
+                configManager.getMessagesConfig().getString("messages.admin.help-add", "/adminpromo add <код> <награда1> [награда2]... - Добавить промокод")));
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(
+                configManager.getMessagesConfig().getString("messages.admin.help-remove", "/adminpromo remove <код> - Удалить промокод")));
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(
+                configManager.getMessagesConfig().getString("messages.admin.help-reset", "/adminpromo reset <игрок> - Сбросить использование промокодов игрока")));
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(
+                configManager.getMessagesConfig().getString("messages.admin.help-reload", "/adminpromo reload - Перезагрузить конфигурацию")));
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(
+                configManager.getMessagesConfig().getString("messages.admin.help-stats", "/adminpromo stats [промокод] - Показать статистику промокодов")));
     }
 
     private void listPromos(CommandSender sender) {
         if (configManager.getAllPromos().isEmpty()) {
-            MessageUtils.sendWarning(sender, "No promocodes found!");
+            String message = configManager.getMessagesConfig().getString("messages.admin.list-empty", "Промокоды не найдены!");
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             return;
         }
 
-        MessageUtils.sendInfo(sender, "&6=== Available Promocodes ===");
+        String header = configManager.getMessagesConfig().getString("messages.admin.list-header", "=== Доступные промокоды ===");
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(header));
+
         for (String code : configManager.getAllPromos().keySet()) {
-            MessageUtils.sendInfo(sender, "&e" + code);
+            String itemFormat = configManager.getMessagesConfig().getString("messages.admin.list-item", "  ● %code%");
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(itemFormat.replace("%code%", code)));
         }
     }
 
@@ -98,12 +117,15 @@ public class AdminPromoCommand implements CommandExecutor {
         String code = args[1].toLowerCase();
 
         if (!ValidationUtils.isValidPromoCode(code)) {
-            MessageUtils.sendError(sender, "Invalid promocode format! Use only letters, numbers, and dashes.");
+            String message = configManager.getMessagesConfig().getString("messages.admin.add-invalid-format", "Неверный формат промокода! Используйте только буквы, цифры и дефисы.");
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             return;
         }
 
         if (configManager.hasPromo(code)) {
-            MessageUtils.sendError(sender, "Promocode '" + code + "' already exists!");
+            String message = configManager.getMessagesConfig().getString("messages.admin.add-already-exists", "Промокод '%code%' уже существует!")
+                    .replace("%code%", code);
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             return;
         }
 
@@ -114,42 +136,59 @@ public class AdminPromoCommand implements CommandExecutor {
         }
         String rewardsString = rewardsBuilder.toString();
 
-        MessageUtils.sendSuccess(sender, "Promocode '" + code + "' added with rewards: " + rewardsString);
-        MessageUtils.sendWarning(sender, "Note: Changes are temporary. Edit config.yml to make them permanent.");
+        String successMsg = configManager.getMessagesConfig().getString("messages.admin.add-success", "Промокод '%code%' добавлен с наградами: %rewards%")
+                .replace("%code%", code)
+                .replace("%rewards%", rewardsString);
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(successMsg));
+
+        String warningMsg = configManager.getMessagesConfig().getString("messages.admin.add-warning", "Примечание: Изменения временные. Отредактируйте config.yml для постоянного сохранения.");
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(warningMsg));
     }
 
     private void removePromo(CommandSender sender, String code) {
         code = code.toLowerCase();
 
         if (!configManager.hasPromo(code)) {
-            MessageUtils.sendError(sender, "Promocode '" + code + "' not found!");
+            String message = configManager.getMessagesConfig().getString("messages.admin.remove-not-found", "Промокод '%code%' не найден!")
+                    .replace("%code%", code);
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             return;
         }
 
-        MessageUtils.sendSuccess(sender, "Promocode '" + code + "' removed!");
-        MessageUtils.sendWarning(sender, "Note: Changes are temporary. Edit config.yml to make them permanent.");
+        String successMsg = configManager.getMessagesConfig().getString("messages.admin.remove-success", "Промокод '%code%' удален!")
+                .replace("%code%", code);
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(successMsg));
+
+        String warningMsg = configManager.getMessagesConfig().getString("messages.admin.remove-warning", "Примечание: Изменения временные. Отредактируйте config.yml для постоянного сохранения.");
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(warningMsg));
     }
 
     private void resetPlayerPromo(CommandSender sender, String playerName) {
         Player target = sender.getServer().getPlayer(playerName);
         if (target == null) {
-            MessageUtils.sendError(sender, "Player '" + playerName + "' not found!");
+            String message = configManager.getMessagesConfig().getString("messages.admin.reset-player-not-found", "Игрок '%player%' не найден!")
+                    .replace("%player%", playerName);
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             return;
         }
 
-        for (String promo : configManager.getAllPromos().keySet()) {
-        }
-        MessageUtils.sendSuccess(sender, "Reset promocode usage for " + target.getName());
+        promoManager.resetPlayerData(target.getUniqueId());
+
+        String successMsg = configManager.getMessagesConfig().getString("messages.admin.reset-success", "Сброшено использование промокодов для игрока %player%")
+                .replace("%player%", target.getName());
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(successMsg));
     }
 
     private void reloadConfig(CommandSender sender) {
         configManager.reloadConfigs();
-        MessageUtils.sendSuccess(sender, "Configuration reloaded successfully!");
+        String message = configManager.getMessagesConfig().getString("messages.admin.reload-success", "Конфигурация успешно перезагружена!");
+        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
     }
 
     private void showStats(CommandSender sender) {
         if (configManager.getAllPromos().isEmpty()) {
-            MessageUtils.sendWarning(sender, "No promocodes found!");
+            String message = configManager.getMessagesConfig().getString("messages.admin.list-empty", "Промокоды не найдены!");
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             return;
         }
 
@@ -174,12 +213,123 @@ public class AdminPromoCommand implements CommandExecutor {
                 }
 
                 sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(line));
+
+                if (promoCode.isTimeBonusEnabled() && !promoCode.getTimeBonuses().isEmpty()) {
+                    java.util.Map<Integer, Integer> timeBonusStats = promoManager.getTimeBonusStatsAsync(promoCode.getCode()).get();
+
+                    StringBuilder timeBonusLine = new StringBuilder();
+                    timeBonusLine.append(configManager.getMessagesConfig()
+                            .getString("messages.stats-time-bonus-prefix", "  &#7E57C2└─ Временные награды:"));
+
+                    boolean first = true;
+                    for (java.util.Map.Entry<Integer, java.util.List<String>> bonusEntry : promoCode.getTimeBonuses().entrySet()) {
+                        int minutes = bonusEntry.getKey();
+                        int playerCount = timeBonusStats.getOrDefault(minutes, 0);
+
+                        String formattedTime = com.bobobo.plugins.b0nuscode.ut.TimeFormatter.formatMinutes(minutes);
+                        String bonusLine = configManager.getMessagesConfig()
+                                .getString("messages.stats-time-bonus-line", " &#AB47BC%time%&#7E57C2: &#9575CD%count% игроков")
+                                .replace("%time%", formattedTime)
+                                .replace("%count%", String.valueOf(playerCount));
+
+                        if (!first) {
+                            timeBonusLine.append(" &#7E57C2|");
+                        }
+                        timeBonusLine.append(bonusLine);
+                        first = false;
+                    }
+
+                    sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(timeBonusLine.toString()));
+                }
             } catch (Exception e) {
-                MessageUtils.sendError(sender, "Error getting stats for " + promoCode.getCode());
+                String message = configManager.getMessagesConfig().getString("messages.admin.stats-error", "Ошибка получения статистики для промокода %code%")
+                        .replace("%code%", promoCode.getCode());
+                sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
             }
         }
 
         String footer = configManager.getMessagesConfig().getString("messages.stats-footer", "&#6A0DAD&l===========================");
         sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(footer));
+    }
+
+    private void showPromoStats(CommandSender sender, String promoCodeName) {
+        String promo = promoCodeName.toLowerCase();
+
+        if (!configManager.hasPromo(promo)) {
+            String message = configManager.getMessagesConfig().getString("messages.admin.stats-promo-not-found", "&#ff0000Промокод '&#ff6b35%code%&#ff0000' не найден!")
+                    .replace("%code%", promoCodeName);
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
+            return;
+        }
+
+        PromoCode promoCode = configManager.getPromoCode(promo);
+
+        try {
+            int uses = promoManager.getPromoUsesAsync(promo).get();
+
+            String header = configManager.getMessagesConfig().getString("messages.stats-detailed-header", "&#6A0DAD&l=== &#C4B0FBСтатистика: &#B388EB%code% &#6A0DAD&l===")
+                    .replace("%code%", promoCode.getCode());
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(header));
+
+            String youtuberLine = configManager.getMessagesConfig().getString("messages.stats-detailed-youtuber", "&#7E57C2Ютубер: &#AB47BC%youtuber%")
+                    .replace("%youtuber%", promoCode.getYoutuber());
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(youtuberLine));
+
+            String usesLine = configManager.getMessagesConfig().getString("messages.stats-detailed-uses", "&#7E57C2Использований: &#9575CD%uses%")
+                    .replace("%uses%", String.valueOf(uses));
+            if (promoCode.hasMaxUses()) {
+                usesLine += configManager.getMessagesConfig().getString("messages.stats-detailed-max", " &#7E57C2/ &#AB47BC%max%")
+                        .replace("%max%", String.valueOf(promoCode.getMaxUses()));
+            }
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(usesLine));
+
+            sender.sendMessage("");
+
+            String rewardsHeader = configManager.getMessagesConfig().getString("messages.stats-detailed-rewards-header", "&#C4B0FBНачальные награды:");
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(rewardsHeader));
+
+            for (String reward : promoCode.getRewards()) {
+                String rewardLine = configManager.getMessagesConfig().getString("messages.stats-detailed-reward-item", "  &#7E57C2• &#9575CD%reward%")
+                        .replace("%reward%", reward);
+                sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(rewardLine));
+            }
+
+            if (promoCode.isTimeBonusEnabled() && !promoCode.getTimeBonuses().isEmpty()) {
+                sender.sendMessage("");
+
+                String timeBonusHeader = configManager.getMessagesConfig().getString("messages.stats-detailed-time-bonus-header", "&#C4B0FBВременные награды:");
+                sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(timeBonusHeader));
+
+                java.util.Map<Integer, Integer> timeBonusStats = promoManager.getTimeBonusStatsAsync(promo).get();
+
+                java.util.List<Integer> sortedMinutes = new java.util.ArrayList<>(promoCode.getTimeBonuses().keySet());
+                java.util.Collections.sort(sortedMinutes);
+
+                for (int minutes : sortedMinutes) {
+                    java.util.List<String> rewards = promoCode.getTimeBonuses().get(minutes);
+                    int playerCount = timeBonusStats.getOrDefault(minutes, 0);
+
+                    String formattedTime = com.bobobo.plugins.b0nuscode.ut.TimeFormatter.formatMinutes(minutes);
+                    String timeLine = configManager.getMessagesConfig().getString("messages.stats-detailed-time-bonus-time", "  &#AB47BC⏱ %time% &#7E57C2- &#9575CD%count% игроков получили")
+                            .replace("%time%", formattedTime)
+                            .replace("%count%", String.valueOf(playerCount));
+                    sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(timeLine));
+
+                    for (String reward : rewards) {
+                        String rewardLine = configManager.getMessagesConfig().getString("messages.stats-detailed-time-bonus-reward", "     &#7E57C2└─ &#9575CD%reward%")
+                                .replace("%reward%", reward);
+                        sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(rewardLine));
+                    }
+                }
+            }
+
+            String footer = configManager.getMessagesConfig().getString("messages.stats-detailed-footer", "&#6A0DAD&l================================");
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(footer));
+
+        } catch (Exception e) {
+            String message = configManager.getMessagesConfig().getString("messages.admin.stats-error", "&#ff0000Ошибка получения статистики для промокода %code%")
+                    .replace("%code%", promoCode.getCode());
+            sender.sendMessage(com.bobobo.plugins.b0nuscode.ut.ColorParser.parse(message));
+        }
     }
 }

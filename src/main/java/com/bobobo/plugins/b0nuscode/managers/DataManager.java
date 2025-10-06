@@ -95,4 +95,17 @@ public class DataManager {
     public Map<UUID, Long> getAllPlayTimes() {
         return new HashMap<>(playTime);
     }
+
+    public CompletableFuture<Void> resetPlayerDataAsync(UUID uuid) {
+        playTime.remove(uuid);
+        return databaseManager.resetPlayerDataAsync(uuid);
+    }
+
+    public void resetPlayerData(UUID uuid) {
+        try {
+            resetPlayerDataAsync(uuid).get();
+        } catch (Exception e) {
+            plugin.getLogger().severe("Error resetting player data: " + e.getMessage());
+        }
+    }
 }

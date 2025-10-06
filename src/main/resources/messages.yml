@@ -8,6 +8,39 @@ messages:
   max-uses-reached: "&cЭтот промокод исчерпал максимальное количество использований!"
   no-rewards: "&cУ этого промокода нет наград!"
   youtuber-cannot-use-own: "&cВы не можете использовать свой собственный промокод!"
+  admin:
+    no-permission: "&#ff0000У вас нет прав для использования этой команды!"
+    help-header: "&#6A0DAD&l=== &#C4B0FBКоманды B0nusCode &#6A0DAD&l==="
+    help-list: "&#AB47BC/adminpromo list &#7E57C2- Показать все промокоды"
+    help-add: "&#AB47BC/adminpromo add <код> <награда1> [награда2]... &#7E57C2- Добавить промокод"
+    help-remove: "&#AB47BC/adminpromo remove <код> &#7E57C2- Удалить промокод"
+    help-reset: "&#AB47BC/adminpromo reset <игрок> &#7E57C2- Сбросить использование промокодов игрока"
+    help-reload: "&#AB47BC/adminpromo reload &#7E57C2- Перезагрузить конфигурацию"
+    help-stats: "&#AB47BC/adminpromo stats [промокод] &#7E57C2- Показать статистику промокодов"
+
+    list-header: "&#6A0DAD&l=== &#C4B0FBДоступные промокоды &#6A0DAD&l==="
+    list-item: "  &#AB47BC● &#B388EB%code%"
+    list-empty: "&#ff6b35Промокоды не найдены!"
+
+    add-invalid-format: "&#ff0000Неверный формат промокода! Используйте только буквы, цифры и дефисы."
+    add-already-exists: "&#ff0000Промокод '&#ff6b35%code%&#ff0000' уже существует!"
+    add-success: "&#00ff00Промокод '&#4ecdc4%code%&#00ff00' добавлен с наградами: &#ffd700%rewards%"
+    add-warning: "&#ffff00Примечание: Изменения временные. Отредактируйте config.yml для постоянного сохранения."
+    add-usage: "&#ff0000Использование: /adminpromo add <код> <награда1> [награда2] [награда3]..."
+
+    remove-not-found: "&#ff0000Промокод '&#ff6b35%code%&#ff0000' не найден!"
+    remove-success: "&#00ff00Промокод '&#4ecdc4%code%&#00ff00' удален!"
+    remove-warning: "&#ffff00Примечание: Изменения временные. Отредактируйте config.yml для постоянного сохранения."
+    remove-usage: "&#ff0000Использование: /adminpromo remove <код>"
+
+    reset-player-not-found: "&#ff0000Игрок '&#ff6b35%player%&#ff0000' не найден!"
+    reset-success: "&#00ff00Сброшено использование промокодов для игрока &#4ecdc4%player%"
+    reset-usage: "&#ff0000Использование: /adminpromo reset <игрок>"
+
+    reload-success: "&#00ff00Конфигурация успешно перезагружена!"
+
+    stats-error: "&#ff0000Ошибка получения статистики для промокода %code%"
+    stats-promo-not-found: "&#ff0000Промокод '&#ff6b35%code%&#ff0000' не найден!"
   promo-activated: |
     &#6A0DAD&l    *✧･ﾟ &#C4B0FBПромокод активирован! &#6A0DAD&lﾟ･✧*
     &#6A0DAD  &#AB47BC%player% &#6A0DADиспользовал промокод от &#B388EB%youtuber%&#6A0DAD!
@@ -40,4 +73,17 @@ messages:
   stats-header: "&#6A0DAD&l=== Статистика промокодов ==="
   stats-line: "&#C4B0FB%code% &#7E57C2(Ютубер: &#AB47BC%youtuber%&#7E57C2) - &#9575CD%uses% использований"
   stats-max-uses: " &#7E57C2(макс: &#AB47BC%max%&#7E57C2)"
+  stats-time-bonus-prefix: "  &#7E57C2└─ Временные награды:"
+  stats-time-bonus-line: " &#AB47BC%time%&#7E57C2: &#9575CD%count% игроков"
   stats-footer: "&#6A0DAD&l==========================="
+
+  stats-detailed-header: "&#6A0DAD&l=== &#C4B0FBСтатистика: &#B388EB%code% &#6A0DAD&l==="
+  stats-detailed-youtuber: "&#7E57C2Ютубер: &#AB47BC%youtuber%"
+  stats-detailed-uses: "&#7E57C2Использований: &#9575CD%uses%"
+  stats-detailed-max: " &#7E57C2/ &#AB47BC%max%"
+  stats-detailed-rewards-header: "&#C4B0FBНачальные награды:"
+  stats-detailed-reward-item: "  &#7E57C2• &#9575CD%reward%"
+  stats-detailed-time-bonus-header: "&#C4B0FBВременные награды:"
+  stats-detailed-time-bonus-time: "  &#AB47BC⏱ %time% &#7E57C2- &#9575CD%count% игроков получили"
+  stats-detailed-time-bonus-reward: "     &#7E57C2└─ &#9575CD%reward%"
+  stats-detailed-footer: "&#6A0DAD&l================================"

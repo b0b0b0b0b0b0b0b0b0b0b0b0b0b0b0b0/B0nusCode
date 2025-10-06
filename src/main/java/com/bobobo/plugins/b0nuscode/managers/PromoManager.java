@@ -7,6 +7,7 @@ import com.bobobo.plugins.b0nuscode.rw.RewardExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class PromoManager {
@@ -80,6 +81,14 @@ public class PromoManager {
 
     public CompletableFuture<Integer> getPromoUsesAsync(String promoCode) {
         return databaseManager.getPromoUsesAsync(promoCode.toLowerCase());
+    }
+
+    public CompletableFuture<java.util.Map<Integer, Integer>> getTimeBonusStatsAsync(String promoCode) {
+        return databaseManager.getAllTimeBonusStatsAsync(promoCode.toLowerCase());
+    }
+
+    public void resetPlayerData(UUID uuid) {
+        dataManager.resetPlayerData(uuid);
     }
 
     public enum PromoResult {
