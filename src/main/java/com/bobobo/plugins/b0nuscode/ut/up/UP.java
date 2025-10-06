@@ -31,7 +31,6 @@ public class UP {
                         "\u001B[33m, latest version: \u001B[32m" + latestVersion + "\u001B[0m.");
                 logWarning("Please update the plugin. Choose one of the following links to download:");
                 console.sendMessage(PREFIX + "\u001B[36m1. Black-Minecraft: \u001B[0mhttps://bm.wtf/resources/9373/");
-                console.sendMessage(PREFIX + "\u001B[36m2. SpigotMc.ru: \u001B[0mhttps://spigotmc.ru/resources/4445/");
                 console.sendMessage(PREFIX + " ");
                 console.sendMessage(PREFIX + "\u001B[32m[Source]\u001B[0m \u001B[36mhttps://github.com/b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0/B0nusCode\u001B[0m");
                 console.sendMessage(PREFIX + " ");
