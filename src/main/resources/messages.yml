@@ -44,11 +44,6 @@ messages:
   promo-activated: |
     &#6A0DAD&l    *✧･ﾟ &#C4B0FBПромокод активирован! &#6A0DAD&lﾟ･✧*
     &#6A0DAD  &#AB47BC%player% &#6A0DADиспользовал промокод от &#B388EB%youtuber%&#6A0DAD!
-    &#6A0DAD               
-    &#C4B0FB         Полученные награды:
-    &#7E57C2       • Kit Titan
-    &#7E57C2       • 100,000$
-    &#7E57C2       • 2x Donate Case
     &#6A0DAD&l   ･✧ﾟ======================= ﾟ✧･
   promo-broadcast:
     enabled: true
