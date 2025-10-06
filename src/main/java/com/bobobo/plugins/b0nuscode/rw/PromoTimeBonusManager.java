@@ -91,7 +91,6 @@ public class PromoTimeBonusManager {
 
                             claimedBonuses.put(key, requiredMinutes);
 
-                            // Записываем статистику в БД
                             databaseManager.recordTimeBonusClaimAsync(player.getUniqueId(), promoCode.getCode(), requiredMinutes);
 
                             plugin.getLogger().info("Time bonus given to " + player.getName() +
